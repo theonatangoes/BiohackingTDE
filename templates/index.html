@@ -39,12 +39,8 @@
       font-weight: 600;
     }
 
-    input[type="file"] {
-      padding: 5px;
-    }
-
-    input[type="password"],
-    input[type="text"] {
+    input[type="file"],
+    input[type="password"] {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
@@ -88,12 +84,6 @@
     .btn-descriptografar:hover {
       background-color: #e6f5e6;
     }
-
-    small {
-      display: block;
-      margin-top: 5px;
-      color: #555;
-    }
   </style>
 </head>
 
@@ -101,7 +91,7 @@
   <div class="container">
     <h2>Sistema de Armazenamento<br>Seguro com Criptografia de Arquivos</h2>
     <form id="formulario" enctype="multipart/form-data">
-      <label>Escolha um arquivo que deseja criptografar</label>
+      <label>Escolha um arquivo</label>
       <input type="file" name="arquivo" required>
 
       <label for="senha">Digite a senha</label>
@@ -120,15 +110,41 @@
       const formData = new FormData(form);
       formData.append("acao", acao);
 
-      const resposta = await fetch(`/${acao}`, {
-        method: "POST",
-        body: formData
-      });
+      try {
+        const resposta = await fetch("/processar", {
+          method: "POST",
+          body: formData
+        });
 
-      if (resposta.ok) {
-        alert(`✅ Arquivo ${acao === 'criptografar' ? 'criptografado' : 'descriptografado'} com sucesso!`);
-      } else {
-        alert("❌ Ocorreu um erro. Verifique o arquivo e a senha.");
+        if (!resposta.ok) {
+          const erro = await resposta.text();
+          alert("Erro: " + erro);
+          return;
+        }
+
+        // Pega o conteúdo como blob (arquivo)
+        const blob = await resposta.blob();
+
+        // Tenta extrair o nome do arquivo do header Content-Disposition
+        const cd = resposta.headers.get("Content-Disposition");
+        let nomeArquivo = "download";
+        if (cd) {
+          const match = cd.match(/filename="?([^"]+)"?/);
+          if (match && match[1]) nomeArquivo = match[1];
+        }
+
+        // Cria URL temporária para download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = nomeArquivo;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+      } catch (err) {
+        alert("Erro na requisição: " + err);
       }
     }
   </script>
