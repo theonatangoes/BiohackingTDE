@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Armazenamento Seguro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-image: url('https://static.wixstatic.com/media/e57e4d_a2cf7fc365a341d9b897ed24d0264923~mv2.jpg/v1/fill/w_568,h_320,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/e57e4d_a2cf7fc365a341d9b897ed24d0264923~mv2.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: #f1f1f1;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h2 {
+      color: #1a8c1a;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: 600;
+    }
+
+    input[type="file"] {
+      padding: 5px;
+    }
+
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .buttons button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-criptografar {
+      background-color: #1a8c1a;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .btn-criptografar:hover {
+      background-color: #166c16;
+    }
+
+    .btn-descriptografar {
+      border: 2px solid #1a8c1a;
+      background-color: white;
+      color: #1a8c1a;
+    }
+
+    .btn-descriptografar:hover {
+      background-color: #e6f5e6;
+    }
+
+    small {
+      display: block;
+      margin-top: 5px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Sistema de Armazenamento<br>Seguro com Criptografia de Arquivos</h2>
+    <form id="formulario" enctype="multipart/form-data">
+      <label>Escolha um arquivo que deseja criptografar</label>
+      <input type="file" name="arquivo" required>
+
+      <label for="senha">Digite a senha</label>
+      <input type="password" id="senha" name="senha" required>
+
+      <div class="buttons">
+        <button type="button" class="btn-criptografar" onclick="enviarFormulario('criptografar')">Criptografar</button>
+        <button type="button" class="btn-descriptografar" onclick="enviarFormulario('descriptografar')">Descriptografar</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    async function enviarFormulario(acao) {
+      const form = document.getElementById("formulario");
+      const formData = new FormData(form);
+      formData.append("acao", acao);
+
+      const resposta = await fetch(`/${acao}`, {
+        method: "POST",
+        body: formData
+      });
+
+      if (resposta.ok) {
+        alert(`✅ Arquivo ${acao === 'criptografar' ? 'criptografado' : 'descriptografado'} com sucesso!`);
+      } else {
+        alert("❌ Ocorreu um erro. Verifique o arquivo e a senha.");
+      }
+    }
+  </script>
+</body>
+
+</html>
