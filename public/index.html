@@ -51,7 +51,9 @@
     .buttons {
       margin-top: 20px;
       display: flex;
-      justify-content: space-between;
+      gap: 10px;
+      justify-content: center;
+      /* centraliza os botões */
     }
 
     .buttons button {
@@ -63,12 +65,15 @@
       font-size: 15px;
       cursor: pointer;
       transition: 0.3s;
+      display: flex;
+      justify-content: center;
+      /* centraliza conteúdo dentro do botão */
+      align-items: center;
     }
 
     .btn-criptografar {
       background-color: #1a8c1a;
       color: white;
-      margin-right: 10px;
     }
 
     .btn-criptografar:hover {
