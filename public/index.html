@@ -84,6 +84,13 @@
     .btn-descriptografar:hover {
       background-color: #e6f5e6;
     }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -102,6 +109,11 @@
         <button type="button" class="btn-descriptografar" onclick="enviarFormulario('descriptografar')">Descriptografar</button>
       </div>
     </form>
+
+    <footer>
+      © Desenvolvido por Theo Natan, Manoel Neto, Cauã Nascimento e Lucas Natanael | Sistema de Armazenamento Seguro com
+      Criptografia de Arquivos.
+    </footer>
   </div>
 
   <script>
@@ -123,7 +135,6 @@
         }
 
         const blob = await resposta.blob();
-
         const cd = resposta.headers.get("Content-Disposition");
         let nomeArquivo = "download";
         if (cd) {
