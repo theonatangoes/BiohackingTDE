@@ -2,9 +2,9 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Sistema de Armazenamento Seguro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -89,13 +89,13 @@
 
 <body>
   <div class="container">
-    <h2>Sistema de Armazenamento<br>Seguro com Criptografia de Arquivos</h2>
+    <h2>Sistema de Armazenamento<br />Seguro com Criptografia de Arquivos</h2>
     <form id="formulario" enctype="multipart/form-data">
       <label>Escolha um arquivo</label>
-      <input type="file" name="arquivo" required>
+      <input type="file" name="arquivo" required />
 
       <label for="senha">Digite a senha</label>
-      <input type="password" id="senha" name="senha" required>
+      <input type="password" id="senha" name="senha" required />
 
       <div class="buttons">
         <button type="button" class="btn-criptografar" onclick="enviarFormulario('criptografar')">Criptografar</button>
@@ -113,7 +113,7 @@
       try {
         const resposta = await fetch("/processar", {
           method: "POST",
-          body: formData
+          body: formData,
         });
 
         if (!resposta.ok) {
@@ -122,10 +122,8 @@
           return;
         }
 
-        // Pega o conteúdo como blob (arquivo)
         const blob = await resposta.blob();
 
-        // Tenta extrair o nome do arquivo do header Content-Disposition
         const cd = resposta.headers.get("Content-Disposition");
         let nomeArquivo = "download";
         if (cd) {
@@ -133,7 +131,6 @@
           if (match && match[1]) nomeArquivo = match[1];
         }
 
-        // Cria URL temporária para download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -142,7 +139,6 @@
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
-
       } catch (err) {
         alert("Erro na requisição: " + err);
       }
