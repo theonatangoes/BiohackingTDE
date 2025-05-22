@@ -33,10 +33,13 @@ A aplicação está preparada para ser implantada na plataforma **Vercel** utili
    cd seu-repositorio
    ```
 
-/
-├── app.py # Código principal Flask
-├── requirements.txt # Dependências Python
-├── vercel.json # Configuração para deploy Vercel
-├── templates/
-│ └── index.html # Página HTML do sistema
-└── static/ # (opcional) CSS e imagens, se houver
+
+BiohackingTDE-main/
+├── api/
+│   └── app.py               
+├── public/
+│   ├── index.html           
+│   └── iconebiohacking.svg  
+├── requirements.txt         
+├── vercel.json              
+└── README.md
