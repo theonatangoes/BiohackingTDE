@@ -4,15 +4,24 @@ import io
 import base64
 import hashlib
 
-app = Flask(__name__)
+# Inicializa o aplicativo Flask corretamente com _name_
+app = Flask(_name_)
 
 def gerar_chave(senha):
+    """
+    Gera uma chave de criptografia baseada em uma senha usando SHA-256.
+    Essa chave será usada com o algoritmo Fernet.
+    """
     hash_senha = hashlib.sha256(senha.encode()).digest()
     chave = base64.urlsafe_b64encode(hash_senha)
     return chave
 
 @app.route("/processar", methods=["POST"])
 def processar():
+    """
+    Rota para criptografar ou descriptografar um arquivo enviado via formulário.
+    Espera três parâmetros no formulário: arquivo, senha e ação (criptografar ou descriptografar).
+    """
     arquivo = request.files.get("arquivo")
     senha = request.form.get("senha")
     acao = request.form.get("acao")
@@ -45,5 +54,6 @@ def processar():
         mimetype="application/octet-stream"
     )
 
-if __name__ == "__main__":
+# Correção do bloco principal para rodar o servidor
+if __name__ == "_main_":
     app.run(debug=True)
