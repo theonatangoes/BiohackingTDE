@@ -1,31 +1,44 @@
 # Sistema de Armazenamento Seguro com Criptografia de Arquivos
 
-Este projeto é uma aplicação web feita em **Flask** que permite criptografar e descriptografar arquivos usando uma senha. O backend utiliza a biblioteca `cryptography` para segurança com Fernet e derivação de chave PBKDF2HMAC.
+Este projeto é uma aplicação web desenvolvida com **Python e Flask** que permite **criptografar e descriptografar arquivos com uma senha definida pelo usuário**. O sistema utiliza a biblioteca `cryptography` com o algoritmo **Fernet**, derivando a chave a partir de uma senha usando **SHA-256** e **Base64**.
 
-A aplicação está preparada para ser implantada na plataforma **Vercel** utilizando integração com **GitHub**.
+A aplicação está pronta para ser **implantada na plataforma Vercel** com integração via GitHub.
 
 ---
 
-## Funcionalidades
+## 🔒 Funcionalidades
 
-- Upload de arquivo para criptografia/descriptografia
-- Entrada de senha para geração de chave de criptografia segura
-- Download do arquivo processado (criptografado ou descriptografado)
+- Upload de arquivos para **criptografar** ou **descriptografar**
+- Geração de chave criptográfica a partir de senha segura (SHA-256)
+- Download do arquivo processado (.cripto ou restaurado)
+- **Bloqueio após 5 tentativas de senha incorreta por IP**
 - Interface web simples e responsiva com HTML e CSS
+- Sistema não armazena arquivos nem senhas no servidor
 
 ---
 
-## Tecnologias
+## 🛡️ Medidas de Segurança
 
-- Python 3.x
-- Flask
-- cryptography
-- Vercel (para deploy)
-- GitHub (para controle de versão e deploy)
+- **Criptografia Simétrica** com Fernet (AES + HMAC)
+- **Derivação de chave segura** com SHA-256 + Base64
+- **Limite de tentativas por IP (5 vezes)** para evitar ataques de força bruta
+- **Validação de entrada e tratamento de erros**
+- Arquivos e senhas **não são armazenados** no servidor
 
 ---
 
-## Como rodar localmente
+## ⚙️ Tecnologias Utilizadas
+
+- **Python 3.x**
+- **Flask** – Framework web
+- **cryptography** – Biblioteca de criptografia (Fernet)
+- **HTML/CSS** – Interface web
+- **Vercel** – Deploy automático
+- **GitHub** – Controle de versão e deploy
+
+---
+
+## 🚀 Como Rodar Localmente
 
 1. Clone o repositório:
    ```bash
@@ -33,13 +46,16 @@ A aplicação está preparada para ser implantada na plataforma **Vercel** utili
    cd seu-repositorio
    ```
 
+---
+
+## 📚 Estrutura do Projeto
 
 BiohackingTDE-main/
 ├── api/
-│   └── app.py               
+│ └── app.py  
 ├── public/
-│   ├── index.html           
-│   └── iconebiohacking.svg  
-├── requirements.txt         
-├── vercel.json              
+│ ├── index.html  
+│ └── iconebiohacking.svg  
+├── requirements.txt  
+├── vercel.json  
 └── README.md
