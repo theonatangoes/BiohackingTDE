@@ -1,11 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/app.py", "use": "@vercel/python" },
-    { "src": "public/index.html", "use": "@vercel/static" }
-  ],
+  "builds": [{ "src": "api/app.py", "use": "@vercel/python" }],
   "routes": [
-    { "src": "/processar", "dest": "api/app.py" },
-    { "src": "/(.*)", "dest": "public/index.html" }
+    { "src": "/processar", "methods": ["POST"], "dest": "api/app.py" },
+    { "src": "/iconebiohacking.svg", "dest": "api/app.py" },
+    { "src": "/", "dest": "api/app.py" }
   ]
 }
