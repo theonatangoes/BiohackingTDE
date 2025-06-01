@@ -4,23 +4,21 @@ import io
 import base64
 import hashlib
 from collections import defaultdict
+from datetime import datetime, timedelta
 import os
 
 app = Flask(__name__)
 
-# Armazena a contagem de tentativas por IP
-tentativas_por_ip = defaultdict(int)
+tentativas_por_ip = defaultdict(lambda: {"tentativas": 0, "bloqueado_ate": None})
 
 def gerar_chave(senha):
     hash_senha = hashlib.sha256(senha.encode()).digest()
     return base64.urlsafe_b64encode(hash_senha)
 
-# Serve o index.html
 @app.route("/")
 def index():
     return send_from_directory("../public", "index.html")
 
-# Serve o favicon corretamente
 @app.route("/iconebiohacking.svg")
 def favicon():
     return send_from_directory("../public", "iconebiohacking.svg")
@@ -39,21 +37,32 @@ def processar():
     chave = gerar_chave(senha)
     fernet = Fernet(chave)
 
+    info = tentativas_por_ip[ip]
+
+    if info["bloqueado_ate"]:
+        if datetime.now() < info["bloqueado_ate"]:
+            return "Limite de tentativas excedido. Tente novamente mais tarde.", 429
+        else:
+            
+            info["tentativas"] = 0
+            info["bloqueado_ate"] = None
+
     try:
         if acao == "criptografar":
             resultado = fernet.encrypt(conteudo)
             nome_saida = arquivo.filename + ".cripto"
         elif acao == "descriptografar":
-            if tentativas_por_ip[ip] >= 5:
-                return "Limite de tentativas excedido. Tente novamente mais tarde.", 429
             resultado = fernet.decrypt(conteudo)
             nome_saida = arquivo.filename.replace(".cripto", "")
-            tentativas_por_ip[ip] = 0
+            info["tentativas"] = 0  # reset em caso de sucesso
         else:
             return "Ação inválida.", 400
     except InvalidToken:
-        tentativas_por_ip[ip] += 1
-        restantes = 5 - tentativas_por_ip[ip]
+        info["tentativas"] += 1
+        if info["tentativas"] >= 5:
+            info["bloqueado_ate"] = datetime.now() + timedelta(minutes=5)
+            return "Limite de tentativas excedido. Tente novamente em 5 minutos.", 429
+        restantes = 5 - info["tentativas"]
         return f"Senha incorreta. Tentativas restantes: {restantes}", 400
     except Exception as e:
         return f"Erro ao processar o arquivo: {str(e)}", 500
