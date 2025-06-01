@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Armazenamento Seguro</title>
   <link rel="icon" href="/iconebiohacking.svg" type="image/svg+xml">
-
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
@@ -17,7 +16,6 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      /* Novo GIF como background */
       background-image: url('https://i.gifer.com/origin/61/6105a3d2805b9503a9e37a44917efe4a_w200.gif');
       background-size: cover;
       background-position: center;
@@ -30,7 +28,6 @@
       padding: 20px;
     }
 
-    /* Adiciona um overlay escuro para melhorar a legibilidade do texto */
     body::before {
       content: '';
       position: fixed;
@@ -39,14 +36,11 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.4);
-      /* Cor preta com 50% de opacidade */
       z-index: -1;
-      /* Fica entre o GIF e o conteúdo */
     }
 
-
     .container {
-      background-color: #ffffffff;
+      background-color: #fff;
       padding: 30px 25px;
       border-radius: 12px;
       box-shadow: 0 0 20px 10px rgba(3, 149, 3, 0.75);
@@ -131,6 +125,20 @@
       text-align: center;
     }
 
+    #mensagemErro {
+      margin-top: 15px;
+      color: red;
+      font-weight: bold;
+    }
+
+    #cronometro {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: red;
+      display: none;
+    }
+
     @media (min-width: 480px) {
       .buttons {
         flex-direction: row;
@@ -161,6 +169,9 @@
       </div>
     </form>
 
+    <div id="mensagemErro"></div>
+    <div id="cronometro"></div>
+
     <footer>
       © Desenvolvido por Theo Natan, Manoel Neto, Cauã Nascimento e Lucas Natanael | Sistema de Armazenamento Seguro com Criptografia de Arquivos.
     </footer>
@@ -169,6 +180,10 @@
   <script>
     async function enviarFormulario(acao) {
       const form = document.getElementById("formulario");
+      const botoes = document.querySelectorAll(".buttons button");
+      const mensagemErro = document.getElementById("mensagemErro");
+      const cronometro = document.getElementById("cronometro");
+
       const formData = new FormData(form);
       formData.append("acao", acao);
 
@@ -180,10 +195,16 @@
 
         if (!resposta.ok) {
           const erro = await resposta.text();
-          alert("Erro: " + erro);
+          mensagemErro.textContent = "Erro: " + erro;
+
+          if (resposta.status === 429 && erro.includes("Tente novamente em")) {
+            iniciarCronometro(5 * 60, botoes, mensagemErro, cronometro);
+          }
+
           return;
         }
 
+        mensagemErro.textContent = "";
         const blob = await resposta.blob();
         const cd = resposta.headers.get("Content-Disposition");
         let nomeArquivo = "download";
@@ -201,8 +222,28 @@
         a.remove();
         window.URL.revokeObjectURL(url);
       } catch (err) {
-        alert("Erro na requisição: " + err);
+        mensagemErro.textContent = "Erro na requisição: " + err;
       }
+    }
+
+    function iniciarCronometro(segundos, botoes, mensagemErro, cronometro) {
+      cronometro.style.display = "block";
+      botoes.forEach(btn => btn.disabled = true);
+
+      const timer = setInterval(() => {
+        const min = Math.floor(segundos / 60);
+        const seg = segundos % 60;
+        cronometro.textContent = `Tente novamente em: ${String(min).padStart(2, '0')}:${String(seg).padStart(2, '0')}`;
+
+        if (segundos <= 0) {
+          clearInterval(timer);
+          cronometro.style.display = "none";
+          mensagemErro.textContent = "";
+          botoes.forEach(btn => btn.disabled = false);
+        }
+
+        segundos--;
+      }, 1000);
     }
   </script>
 </body>
