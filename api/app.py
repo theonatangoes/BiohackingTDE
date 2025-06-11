@@ -59,10 +59,10 @@ def processar():
             return "Ação inválida.", 400
     except InvalidToken:
         info["tentativas"] += 1
-        if info["tentativas"] >= 5:
+        if info["tentativas"] >= 2:
             info["bloqueado_ate"] = datetime.now() + timedelta(minutes=5)
             return "Limite de tentativas excedido. Tente novamente em 5 minutos.", 429
-        restantes = 5 - info["tentativas"]
+        restantes = 2 - info["tentativas"]
         return f"Senha incorreta. Tentativas restantes: {restantes}", 400
     except Exception as e:
         return f"Erro ao processar o arquivo: {str(e)}", 500
