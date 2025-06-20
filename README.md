@@ -38,28 +38,6 @@ A aplicação está pronta para ser **implantada na plataforma Vercel** com inte
 
 ---
 
-## 🚀 Como Rodar Localmente
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
-   ```
-2. Instale as dependências:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Execute o servidor:
-   ```bash
-   python api/app.py
-   ```
-4. cesse a aplicação em:
-   ```bash
-   http://localhost:5000
-   ```
-
----
-
 ## 📚 Estrutura do Projeto
 
 BiohackingTDE-main/
