@@ -2,26 +2,18 @@
 <html lang="pt-br">
 
 <head>
-  <!-- Metadados da página -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Armazenamento Seguro</title>
   <link rel="icon" href="/iconebiohacking.svg" type="image/svg+xml">
-
-  <!-- Fonte Poppins para estilização -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Biblioteca de ícones (Font Awesome) para o ícone de olho -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
-  <!-- CSS da página -->
   <style>
-    /* Reset e configurações gerais */
     * {
       box-sizing: border-box;
     }
 
-    /* Estilização do fundo da página */
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -37,7 +29,6 @@
       padding: 20px;
     }
 
-    /* Camada escura sobre o fundo */
     body::before {
       content: '';
       position: fixed;
@@ -49,7 +40,6 @@
       z-index: -1;
     }
 
-    /* Container principal */
     .container {
       background-color: #fff;
       padding: 30px 25px;
@@ -62,14 +52,12 @@
       z-index: 1;
     }
 
-    /* Título */
     h2 {
       color: #1a8c1a;
       font-size: 22px;
       margin-bottom: 20px;
     }
 
-    /* Labels dos campos */
     label {
       display: block;
       margin: 15px 0 5px;
@@ -77,23 +65,22 @@
       text-align: left;
     }
 
-    /* Inputs padrão */
+    /* AJUSTE APLICADO AQUI */
     input[type="file"],
     input[type="password"],
     input[type="text"] {
       width: 100%;
       padding: 10px;
+      /* A linha "margin-top: 5px;" foi removida daqui */
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-
-    /* Wrapper para o campo de senha com ícone */
+    
     .password-wrapper {
       position: relative;
       width: 100%;
     }
 
-    /* Ícone do olho */
     .password-wrapper i {
       position: absolute;
       top: 50%;
@@ -103,12 +90,10 @@
       color: #888;
     }
 
-    /* Espaço interno extra no campo senha para o ícone não sobrepor texto */
     #senha {
-        padding-right: 40px;
+        padding-right: 40px; 
     }
 
-    /* Botões */
     .buttons {
       margin-top: 25px;
       display: flex;
@@ -126,7 +111,6 @@
       transition: background-color 0.3s ease;
     }
 
-    /* Botão Criptografar */
     .btn-criptografar {
       background-color: #1a8c1a;
       color: white;
@@ -136,7 +120,6 @@
       background-color: #166c16;
     }
 
-    /* Botão Descriptografar */
     .btn-descriptografar {
       border: 2px solid #1a8c1a;
       background-color: rgb(208, 234, 189);
@@ -147,7 +130,6 @@
       background-color: #e6f5e6;
     }
 
-    /* Botão Limpar */
     .btn-resetar {
       background-color: #ccc;
       color: #333;
@@ -157,7 +139,6 @@
       background-color: #bbb;
     }
 
-    /* Rodapé */
     footer {
       margin-top: 20px;
       font-size: 12px;
@@ -165,14 +146,12 @@
       text-align: center;
     }
 
-    /* Mensagem de erro */
     #mensagemErro {
       margin-top: 15px;
       color: red;
       font-weight: bold;
     }
 
-    /* Cronômetro de bloqueio */
     #cronometro {
       margin-top: 10px;
       font-size: 18px;
@@ -181,7 +160,6 @@
       display: none;
     }
 
-    /* Responsividade para telas maiores */
     @media (min-width: 480px) {
       .buttons {
         flex-direction: row;
@@ -196,24 +174,18 @@
 </head>
 
 <body>
-  <!-- Container central -->
   <div class="container">
     <h2>Sistema de Armazenamento<br />Seguro com Criptografia de Arquivos</h2>
-
-    <!-- Formulário -->
     <form id="formulario" enctype="multipart/form-data">
-      <!-- Upload do arquivo -->
       <label>Escolha um arquivo</label>
       <input type="file" name="arquivo" required />
 
-      <!-- Campo de senha com botão visualizar -->
       <label for="senha">Digite a senha</label>
       <div class="password-wrapper">
         <input type="password" id="senha" name="senha" required />
         <i class="fa-solid fa-eye" id="togglePassword"></i>
       </div>
 
-      <!-- Botões de ação -->
       <div class="buttons">
         <button type="button" class="btn-criptografar" onclick="enviarFormulario('criptografar')">Criptografar</button>
         <button type="button" class="btn-descriptografar" onclick="enviarFormulario('descriptografar')">Descriptografar</button>
@@ -221,31 +193,29 @@
       </div>
     </form>
 
-    <!-- Mensagem de erro -->
     <div id="mensagemErro"></div>
-    <!-- Cronômetro -->
     <div id="cronometro"></div>
 
-    <!-- Rodapé -->
     <footer>
       © Desenvolvido por Theo Natan, Manoel Neto, Cauã Nascimento e Lucas Natanael | Sistema de Armazenamento Seguro com Criptografia de Arquivos.
     </footer>
   </div>
 
-  <!-- Scripts -->
   <script>
-    // Função para alternar visualização da senha
     const togglePassword = document.querySelector("#togglePassword");
     const password = document.querySelector("#senha");
 
+    // LÓGICA CORRIGIDA
     togglePassword.addEventListener("click", function () {
+      // Alterna o tipo do input entre 'password' e 'text'
       const type = password.getAttribute("type") === "password" ? "text" : "password";
       password.setAttribute("type", type);
+      
+      // Alterna o ícone entre olho aberto (fa-eye) e olho cortado (fa-eye-slash)
       this.classList.toggle("fa-eye");
       this.classList.toggle("fa-eye-slash");
     });
 
-    // Função principal para envio do formulário (criptografar/descriptografar)
     async function enviarFormulario(acao) {
       const form = document.getElementById("formulario");
       const botoes = document.querySelectorAll(".buttons button");
@@ -261,7 +231,6 @@
           body: formData,
         });
 
-        // Tratamento de erro
         if (!resposta.ok) {
           const erro = await resposta.text();
           mensagemErro.textContent = "Erro: " + erro;
@@ -273,7 +242,6 @@
           return;
         }
 
-        // Se tudo estiver ok, faz o download do arquivo processado
         mensagemErro.textContent = "";
         const blob = await resposta.blob();
         const cd = resposta.headers.get("Content-Disposition");
@@ -296,7 +264,6 @@
       }
     }
 
-    // Função para iniciar o cronômetro de bloqueio (quando excesso de tentativas)
     function iniciarCronometro(segundos, botoes, mensagemErro, cronometro) {
       cronometro.style.display = "block";
       botoes.forEach(btn => btn.disabled = true);
